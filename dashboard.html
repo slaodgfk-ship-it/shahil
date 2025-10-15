@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - College Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-graduation-cap"></i>
+            <span>College Portal</span>
+        </div>
+        <div class="nav-user">
+            <span id="welcomeUser">Welcome, Student!</span>
+            <button onclick="logout()" class="btn btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-menu">
+                <a href="#" onclick="showSection('overview')" class="menu-item active">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="#" onclick="showSection('cafeteria')" class="menu-item">
+                    <i class="fas fa-utensils"></i> Cafeteria
+                </a>
+                <a href="#" onclick="showSection('lostfound')" class="menu-item">
+                    <i class="fas fa-search"></i> Lost & Found
+                </a>
+                <a href="#" onclick="showSection('transport')" class="menu-item">
+                    <i class="fas fa-car"></i> Transport
+                </a>
+                <a href="#" onclick="showSection('feedback')" class="menu-item">
+                    <i class="fas fa-comment"></i> Feedback
+                </a>
+                <a href="#" onclick="showSection('issues')" class="menu-item">
+                    <i class="fas fa-exclamation-triangle"></i> Report Issues
+                </a>
+                <a href="#" onclick="showSection('myissues')" class="menu-item">
+                    <i class="fas fa-list"></i> My Issues
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Overview Section -->
+            <div id="overview" class="content-section active">
+                <h2><i class="fas fa-home"></i> Dashboard Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-card clickable-stat" onclick="showSection('myissues')" title="Click to view all your issues">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3 id="totalIssues">0</h3>
+                        <p>Total Issues</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card clickable-stat pending" onclick="showSection('myissues'); filterMyIssues('Pending')" title="Click to view pending issues">
+                        <i class="fas fa-clock"></i>
+                        <h3 id="pendingIssues">0</h3>
+                        <p>Pending</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card clickable-stat resolved" onclick="showSection('myissues'); filterMyIssues('Resolved')" title="Click to view resolved issues">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 id="resolvedIssues">0</h3>
+                        <p>Resolved</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card clickable-stat" onclick="showSection('cafeteria')" title="Click to order food">
+                        <i class="fas fa-utensils"></i>
+                        <h3 id="totalOrders">0</h3>
+                        <p>Food Orders</p>
+                        <small class="click-hint">Click to order</small>
+                    </div>
+                </div>
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button onclick="showSection('cafeteria')" class="action-btn food-btn">
+                            <i class="fas fa-utensils"></i>
+                            <span>Order Food</span>
+                        </button>
+                        <button onclick="showSection('issues')" class="action-btn report-btn">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Report Issue</span>
+                        </button>
+                        <button onclick="showSection('lostfound')" class="action-btn lost-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Lost & Found</span>
+                        </button>
+                        <button onclick="showSection('transport')" class="action-btn transport-btn">
+                            <i class="fas fa-car"></i>
+                            <span>Find Ride</span>
+                        </button>
+                        <button onclick="showSection('feedback')" class="action-btn feedback-btn">
+                            <i class="fas fa-comment"></i>
+                            <span>Give Feedback</span>
+                        </button>
+                        <button onclick="showSection('myissues')" class="action-btn issues-btn">
+                            <i class="fas fa-list"></i>
+                            <span>My Issues</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Recent Activity <span class="activity-refresh" onclick="loadRecentActivity()" title="Refresh activity">
+                        <i class="fas fa-sync-alt"></i>
+                    </span></h3>
+                    <div id="recentActivityList" class="activity-list">
+                        <p>No recent activity</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cafeteria Section -->
+            <div id="cafeteria" class="content-section">
+                <h2><i class="fas fa-utensils"></i> Cafeteria Food Ordering</h2>
+                <div class="food-menu">
+                    <div class="menu-category">
+                        <h3>Main Course</h3>
+                        <div class="food-items">
+                            <div class="food-item">
+                                <img src="burger.jpg" alt="Burger">
+                                <h4>Chicken Burger</h4>
+                                <p>₹40</p>
+                                <button onclick="addToCart('Burger', 120)" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                            <div class="food-item">
+                                <img src="pizza.jpg" alt="Pizza">
+                                <h4>Margherita Pizza</h4>
+                                <p>₹120</p>
+                                <button onclick="addToCart('Margherita Pizza', 200)" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                            <div class="food-item">
+                                <img src="sandwich.jpg" alt="Sandwich">
+                                <h4>Club Sandwich</h4>
+                                <p>₹40</p>
+                                <button onclick="addToCart('Club Sandwich', 80)" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-category">
+                        <h3>Beverages</h3>
+                        <div class="food-items">
+                            <div class="food-item">
+                                <img src="coffee.jpg" alt="Coffee">
+                                <h4>Coffee</h4>
+                                <p>₹30</p>
+                                <button onclick="addToCart('Coffee', 30)" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                            <div class="food-item">
+                                <img src="tea.jpg" alt="Tea">
+                                <h4>Tea</h4>
+                                <p>₹20</p>
+                                <button onclick="addToCart('Tea', 20)" class="btn btn-primary">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-section">
+                    <h3>Your Cart</h3>
+                    <div id="cartItems" class="cart-items">
+                        <p>Your cart is empty</p>
+                    </div>
+                    <div class="cart-total">
+                        <strong>Total: ₹<span id="cartTotal">0</span></strong>
+                        <button onclick="placeOrder()" class="btn btn-success">Place Order</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lost and Found Section -->
+            <div id="lostfound" class="content-section">
+                <h2><i class="fas fa-search"></i> Lost & Found Portal</h2>
+                <div class="lf-tabs">
+                    <button onclick="showLFTab('report')" class="tab-btn active">Report Lost Item</button>
+                    <button onclick="showLFTab('found')" class="tab-btn">Report Found Item</button>
+                    <button onclick="showLFTab('browse')" class="tab-btn">Browse Items</button>
+                </div>
+                
+                <div id="lf-report" class="lf-tab-content active">
+                    <form id="lostItemForm">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input type="text" id="lostItemName" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Description</label>
+                            <textarea id="lostItemDesc" required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label>Last Seen Location</label>
+                            <input type="text" id="lostItemLocation" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Contact Info</label>
+                            <input type="text" id="lostItemContact" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Report Lost Item</button>
+                    </form>
+                </div>
+
+                <div id="lf-found" class="lf-tab-content">
+                    <form id="foundItemForm">
+                        <div class="input-group">
+                            <label>Item Name</label>
+                            <input type="text" id="foundItemName" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Description</label>
+                            <textarea id="foundItemDesc" required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label>Found Location</label>
+                            <input type="text" id="foundItemLocation" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Your Contact Info</label>
+                            <input type="text" id="foundItemContact" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Report Found Item</button>
+                    </form>
+                </div>
+
+                <div id="lf-browse" class="lf-tab-content">
+                    <div id="lostFoundItems" class="lf-items-grid">
+                        <p>No items reported yet</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transport Section -->
+            <div id="transport" class="content-section">
+                <h2><i class="fas fa-car"></i> Sustainable Transport Sharing</h2>
+                <div class="transport-tabs">
+                    <button onclick="showTransportTab('offer')" class="tab-btn active">Offer Ride</button>
+                    <button onclick="showTransportTab('find')" class="tab-btn">Find Ride</button>
+                </div>
+
+                <div id="transport-offer" class="transport-tab-content active">
+                    <form id="offerRideForm">
+                        <div class="input-group">
+                            <label>From</label>
+                            <input type="text" id="rideFrom" required>
+                        </div>
+                        <div class="input-group">
+                            <label>To</label>
+                            <input type="text" id="rideTo" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" id="rideDateTime" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Available Seats</label>
+                            <input type="number" id="rideSeats" min="1" max="8" required>
+                        </div>
+                        <div class="input-group">
+                            <label>Price per Person (₹)</label>
+                            <input type="number" id="ridePrice" min="0" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Offer Ride</button>
+                    </form>
+                </div>
+
+                <div id="transport-find" class="transport-tab-content">
+                    <div class="search-filters">
+                        <input type="text" id="searchFrom" placeholder="From location">
+                        <input type="text" id="searchTo" placeholder="To location">
+                        <button onclick="searchRides()" class="btn btn-primary">Search Rides</button>
+                    </div>
+                    <div id="availableRides" class="rides-list">
+                        <p>No rides available</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div id="feedback" class="content-section">
+                <h2><i class="fas fa-comment"></i> Student Feedback System</h2>
+                <form id="feedbackForm">
+                    <div class="input-group">
+                        <label>Feedback Category</label>
+                        <select id="feedbackCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Cafeteria">Cafeteria</option>
+                            <option value="Hostel">Hostel</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Rating</label>
+                        <div class="rating-stars">
+                            <span onclick="setRating(1)" class="star">★</span>
+                            <span onclick="setRating(2)" class="star">★</span>
+                            <span onclick="setRating(3)" class="star">★</span>
+                            <span onclick="setRating(4)" class="star">★</span>
+                            <span onclick="setRating(5)" class="star">★</span>
+                        </div>
+                        <input type="hidden" id="feedbackRating" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Your Feedback</label>
+                        <textarea id="feedbackText" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                </form>
+            </div>
+
+            <!-- Report Issues Section -->
+            <div id="issues" class="content-section">
+                <h2><i class="fas fa-exclamation-triangle"></i> Report Problems</h2>
+                <form id="issueForm">
+                    <div class="input-group">
+                        <label>Issue Category</label>
+                        <select id="issueCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                            <option value="Electrical">Electrical</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="Cleaning">Cleaning</option>
+                            <option value="Security">Security</option>
+                            <option value="Internet">Internet/WiFi</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Issue Title</label>
+                        <input type="text" id="issueTitle" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Description</label>
+                        <textarea id="issueDescription" rows="4" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Location</label>
+                        <input type="text" id="issueLocation" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Priority</label>
+                        <select id="issuePriority" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Upload Photo (Optional)</label>
+                        <input type="file" id="issuePhoto" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Report Issue</button>
+                </form>
+            </div>
+
+            <!-- My Issues Section -->
+            <div id="myissues" class="content-section">
+                <h2><i class="fas fa-list"></i> My Reported Issues</h2>
+                <div id="myIssuesList" class="issues-list">
+                    <p>No issues reported yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab" onclick="toggleFabMenu()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-menu">
+            <button class="fab-item" onclick="showSection('cafeteria')" title="Order Food">
+                <i class="fas fa-utensils"></i>
+            </button>
+            <button class="fab-item" onclick="showSection('issues')" title="Report Issue">
+                <i class="fas fa-exclamation-triangle"></i>
+            </button>
+            <button class="fab-item" onclick="showSection('lostfound')" title="Lost & Found">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="api-service.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

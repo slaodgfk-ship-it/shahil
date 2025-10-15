@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - College Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <nav class="navbar admin-nav">
+        <div class="nav-brand">
+            <i class="fas fa-shield-alt"></i>
+            <span>Admin Panel</span>
+        </div>
+        <div class="nav-user">
+            <span id="welcomeAdmin">Welcome, Admin!</span>
+            <button onclick="logout()" class="btn btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="sidebar admin-sidebar">
+            <div class="sidebar-menu">
+                <a href="#" onclick="showAdminSection('overview')" class="menu-item active">
+                    <i class="fas fa-chart-bar"></i> Overview
+                </a>
+                <a href="#" onclick="showAdminSection('issues')" class="menu-item">
+                    <i class="fas fa-exclamation-triangle"></i> Manage Issues
+                </a>
+                <a href="#" onclick="showAdminSection('pending')" class="menu-item">
+                    <i class="fas fa-user-clock"></i> Pending Signups
+                </a>
+                <a href="#" onclick="showAdminSection('students')" class="menu-item">
+                    <i class="fas fa-users"></i> Manage Students
+                </a>
+                <a href="#" onclick="showAdminSection('analytics')" class="menu-item">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="#" onclick="showAdminSection('feedback')" class="menu-item">
+                    <i class="fas fa-comment"></i> Feedback
+                </a>
+                <a href="#" onclick="showAdminSection('orders')" class="menu-item">
+                    <i class="fas fa-utensils"></i> Food Orders
+                </a>
+                <a href="#" onclick="showAdminSection('lostfound')" class="menu-item">
+                    <i class="fas fa-search"></i> Lost & Found
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Admin Overview Section -->
+            <div id="admin-overview" class="content-section active">
+                <h2><i class="fas fa-chart-bar"></i> Admin Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card admin-card clickable-stat" onclick="showAdminSection('issues')" title="Click to view all issues">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3 id="adminTotalIssues">0</h3>
+                        <p>Total Issues</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card pending clickable-stat" onclick="showAdminSection('issues'); filterIssuesByStatus('Pending')" title="Click to view pending issues">
+                        <i class="fas fa-clock"></i>
+                        <h3 id="adminPendingIssues">0</h3>
+                        <p>Pending</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card progress clickable-stat" onclick="showAdminSection('issues'); filterIssuesByStatus('In Progress')" title="Click to view in progress issues">
+                        <i class="fas fa-cog"></i>
+                        <h3 id="adminProgressIssues">0</h3>
+                        <p>In Progress</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card resolved clickable-stat" onclick="showAdminSection('issues'); filterIssuesByStatus('Resolved')" title="Click to view resolved issues">
+                        <i class="fas fa-check-circle"></i>
+                        <h3 id="adminResolvedIssues">0</h3>
+                        <p>Resolved</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card clickable-stat" onclick="showAdminSection('students')" title="Click to view all students">
+                        <i class="fas fa-users"></i>
+                        <h3 id="totalStudents">0</h3>
+                        <p>Registered Students</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card clickable-stat" onclick="showAdminSection('orders')" title="Click to view all orders">
+                        <i class="fas fa-utensils"></i>
+                        <h3 id="adminTotalOrders">0</h3>
+                        <p>Food Orders</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card pending clickable-stat" onclick="showAdminSection('pending')" title="Click to view pending signups">
+                        <i class="fas fa-user-clock"></i>
+                        <h3 id="pendingSignups">0</h3>
+                        <p>Pending Signups</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                    <div class="stat-card admin-card clickable-stat" onclick="showAdminSection('feedback')" title="Click to view all feedback">
+                        <i class="fas fa-comment-dots"></i>
+                        <h3 id="totalFeedback">0</h3>
+                        <p>Total Feedback</p>
+                        <small class="click-hint">Click to view</small>
+                    </div>
+                </div>
+                <div class="admin-charts">
+                    <div class="chart-container clickable-chart" onclick="showAdminSection('analytics')" title="Click to view detailed analytics">
+                        <h3>Issues by Category <i class="fas fa-external-link-alt" style="font-size: 0.8rem; color: #a0aec0;"></i></h3>
+                        <div id="categoryChart" class="chart">
+                            <div class="chart-placeholder">Chart will be displayed here</div>
+                        </div>
+                        <small class="click-hint">Click for detailed analytics</small>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button onclick="showAdminSection('pending')" class="action-btn pending-btn">
+                            <i class="fas fa-user-clock"></i>
+                            <span>Review Signups</span>
+                        </button>
+                        <button onclick="showAdminSection('issues'); filterIssuesByStatus('Pending')" class="action-btn urgent-btn">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Urgent Issues</span>
+                        </button>
+                        <button onclick="exportStudentData()" class="action-btn export-btn">
+                            <i class="fas fa-download"></i>
+                            <span>Export Data</span>
+                        </button>
+                        <button onclick="generateMonthlyReport()" class="action-btn report-btn">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Monthly Report</span>
+                        </button>
+                        <button onclick="showAdminSection('students'); document.getElementById('studentStatusFilter').value='blocked'; filterStudents()" class="action-btn blocked-btn">
+                            <i class="fas fa-ban"></i>
+                            <span>Blocked Users</span>
+                        </button>
+                        <button onclick="showAdminSection('analytics')" class="action-btn analytics-btn">
+                            <i class="fas fa-chart-line"></i>
+                            <span>View Analytics</span>
+                        </button>
+                        <button onclick="changeAdminCredentials()" class="action-btn security-btn">
+                            <i class="fas fa-key"></i>
+                            <span>Change Password</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Signups Section -->
+            <div id="admin-pending" class="content-section">
+                <h2><i class="fas fa-user-clock"></i> Pending Signup Requests</h2>
+                <div class="filter-bar">
+                    <input type="text" id="pendingSearch" placeholder="Search pending signups..." onkeyup="searchPendingSignups()">
+                    <select id="courseFilter" onchange="filterPendingSignups()">
+                        <option value="">All Courses</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="BCA">Electronics</option>
+                        <option value="MCA">Electronics</option>
+                        <option value="BBA">Electronics</option>
+                        <option value="MBA">Electronics</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Mechanical">Mechanical</option>
+                        <option value="Civil">Civil</option>
+                        <option value="Business">Business</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                    <select id="yearFilter" onchange="filterPendingSignups()">
+                        <option value="">All Years</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                    </select>
+                </div>
+                <div id="pendingSignupsList" class="pending-signups-list">
+                    <p>No pending signup requests</p>
+                </div>
+            </div>
+
+            <!-- Manage Issues Section -->
+            <div id="admin-issues" class="content-section">
+                <h2><i class="fas fa-exclamation-triangle"></i> Manage Issues</h2>
+                <div class="filter-bar">
+                    <select id="statusFilter" onchange="filterIssues()">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
+                    </select>
+                    <select id="categoryFilter" onchange="filterIssues()">
+                        <option value="">All Categories</option>
+                        <option value="Infrastructure">Infrastructure</option>
+                        <option value="Electrical">Electrical</option>
+                        <option value="Plumbing">Plumbing</option>
+                        <option value="Cleaning">Cleaning</option>
+                        <option value="Security">Security</option>
+                        <option value="Internet">Internet/WiFi</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select id="priorityFilter" onchange="filterIssues()">
+                        <option value="">All Priorities</option>
+                        <option value="Critical">Critical</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div id="adminIssuesList" class="admin-issues-list">
+                    <p>No issues to display</p>
+                </div>
+            </div>
+
+            <!-- Students Section -->
+            <div id="admin-students" class="content-section">
+                <h2><i class="fas fa-users"></i> Manage Students</h2>
+                <div class="admin-controls">
+                    <div class="search-bar">
+                        <input type="text" id="studentSearch" placeholder="Search students..." onkeyup="searchStudents()">
+                        <select id="studentCourseFilter" onchange="filterStudents()">
+                            <option value="">All Courses</option>
+                            <option value="BCA">Business</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Mechanical">Mechanical</option>
+                            <option value="Civil">Civil</option>
+                            <option value="MBA">Business</option>
+                            <option value="MCA">Business</option>
+                            <option value="BBA">Arts</option>
+                        </select>
+                        <select id="studentYearFilter" onchange="filterStudents()">
+                            <option value="">All Years</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                        <select id="studentStatusFilter" onchange="filterStudents()">
+                            <option value="">All Status</option>
+                            <option value="active">Active Only</option>
+                            <option value="blocked">Blocked Only</option>
+                            <option value="new">New Students</option>
+                        </select>
+                    </div>
+                    <div class="bulk-actions">
+                        <button onclick="exportStudentData()" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                        <button onclick="showStudentStats()" class="btn btn-success">
+                            <i class="fas fa-chart-bar"></i> View Statistics
+                        </button>
+                    </div>
+                </div>
+                <div class="student-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <h4 id="totalStudentsCount">0</h4>
+                            <p>Total Students</p>
+                        </div>
+                        <div class="summary-card">
+                            <h4 id="activeStudentsCount">0</h4>
+                            <p>Active This Month</p>
+                        </div>
+                        <div class="summary-card">
+                            <h4 id="newStudentsCount">0</h4>
+                            <p>New This Week</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="studentsList" class="students-list">
+                    <p>No students registered yet</p>
+                </div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div id="admin-feedback" class="content-section">
+                <h2><i class="fas fa-comment"></i> Student Feedback</h2>
+                <div class="filter-bar">
+                    <select id="feedbackCategoryFilter" onchange="filterFeedback()">
+                        <option value="">All Categories</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Infrastructure">Infrastructure</option>
+                        <option value="Cafeteria">Cafeteria</option>
+                        <option value="Hostel">Hostel</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select id="ratingFilter" onchange="filterFeedback()">
+                        <option value="">All Ratings</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
+                    </select>
+                </div>
+                <div id="feedbackList" class="feedback-list">
+                    <p>No feedback submitted yet</p>
+                </div>
+            </div>
+
+            <!-- Food Orders Section -->
+            <div id="admin-orders" class="content-section">
+                <h2><i class="fas fa-utensils"></i> Food Orders Management</h2>
+                <div class="filter-bar">
+                    <select id="orderStatusFilter" onchange="filterOrders()">
+                        <option value="">All Orders</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Preparing">Preparing</option>
+                        <option value="Ready">Ready</option>
+                        <option value="Delivered">Delivered</option>
+                    </select>
+                    <input type="date" id="orderDateFilter" onchange="filterOrders()">
+                </div>
+                <div id="ordersList" class="orders-list">
+                    <p>No orders to display</p>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="admin-analytics" class="content-section">
+                <h2><i class="fas fa-chart-line"></i> Advanced Analytics</h2>
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Registration Trends</h3>
+                        <div id="registrationChart" class="chart-area">
+                            <canvas id="registrationCanvas" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Issue Categories</h3>
+                        <div id="issueCategoryChart" class="chart-area">
+                            <div class="category-stats" id="categoryStats">
+                                <!-- Category statistics will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Course Distribution</h3>
+                        <div id="courseDistribution" class="chart-area">
+                            <div class="course-stats" id="courseStats">
+                                <!-- Course statistics will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3>Activity Overview</h3>
+                        <div class="activity-metrics">
+                            <div class="metric">
+                                <span class="metric-value" id="avgIssuesPerStudent">0</span>
+                                <span class="metric-label">Avg Issues/Student</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value" id="avgOrdersPerStudent">0</span>
+                                <span class="metric-label">Avg Orders/Student</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value" id="avgFeedbackRating">0</span>
+                                <span class="metric-label">Avg Feedback Rating</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-value" id="resolutionRate">0%</span>
+                                <span class="metric-label">Issue Resolution Rate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detailed-reports">
+                    <h3>Detailed Reports</h3>
+                    <div class="report-actions">
+                        <button onclick="generateMonthlyReport()" class="btn btn-primary">
+                            <i class="fas fa-file-alt"></i> Monthly Report
+                        </button>
+                        <button onclick="generateIssueReport()" class="btn btn-success">
+                            <i class="fas fa-exclamation-triangle"></i> Issue Analysis
+                        </button>
+                        <button onclick="generateFeedbackReport()" class="btn" style="background: #9f7aea; color: white;">
+                            <i class="fas fa-comment"></i> Feedback Summary
+                        </button>
+                        <button onclick="generateStudentActivityReport()" class="btn" style="background: #ed8936; color: white;">
+                            <i class="fas fa-users"></i> Student Activity
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lost & Found Section -->
+            <div id="admin-lostfound" class="content-section">
+                <h2><i class="fas fa-search"></i> Lost & Found Management</h2>
+                <div class="lf-admin-tabs">
+                    <button onclick="showLFAdminTab('lost')" class="tab-btn active">Lost Items</button>
+                    <button onclick="showLFAdminTab('found')" class="tab-btn">Found Items</button>
+                </div>
+                <div id="lf-admin-lost" class="lf-admin-content active">
+                    <div id="adminLostItems" class="lf-admin-list">
+                        <p>No lost items reported</p>
+                    </div>
+                </div>
+                <div id="lf-admin-found" class="lf-admin-content">
+                    <div id="adminFoundItems" class="lf-admin-list">
+                        <p>No found items reported</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div class="fab-container">
+        <button class="fab admin-fab" onclick="toggleFabMenu()">
+            <i class="fas fa-plus"></i>
+        </button>
+        <div class="fab-menu">
+            <button class="fab-item" onclick="showAdminSection('pending')" title="Pending Signups">
+                <i class="fas fa-user-clock"></i>
+            </button>
+            <button class="fab-item" onclick="showAdminSection('issues')" title="Manage Issues">
+                <i class="fas fa-exclamation-triangle"></i>
+            </button>
+            <button class="fab-item" onclick="showAdminSection('analytics')" title="Analytics">
+                <i class="fas fa-chart-line"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="api-service.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

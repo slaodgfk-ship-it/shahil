@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Student Portal</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginForm" class="form-container active">
+            <div class="form-loading-overlay">
+                <div class="form-loading-spinner"></div>
+            </div>
+            <div class="form-header">
+                <h1><i class="fas fa-graduation-cap"></i> College Portal</h1>
+                <p>Welcome back! Please sign in to your account</p>
+            </div>
+            <form id="loginFormElement">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginUsername" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+            <div class="form-footer">
+                <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up here</a></p>
+                <p><a href="#" onclick="showAdminLogin()">Admin Login</a></p>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupForm" class="form-container">
+            <div class="form-loading-overlay">
+                <div class="form-loading-spinner"></div>
+            </div>
+            <div class="form-header">
+                <h1><i class="fas fa-user-plus"></i> Create Account</h1>
+                <p>Join our college community</p>
+            </div>
+            <form id="signupFormElement">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="signupUsername" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="signupEmail" placeholder="College Email" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="signupPassword" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-home"></i>
+                    <input type="text" id="roomNo" placeholder="Room Number (only for hostler)">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-book"></i>
+                    <select id="course" required onchange="updateYearOptions()">
+                        <option value="">Select Course</option>
+                        <option value="BCA">BCA</option>
+                        <option value="BBA">BBA</option>
+                        <option value="MCA">MCA</option>
+                        <option value="MBA">MBA</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Civil">Civil</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-calendar"></i>
+                    <select id="year" required>
+                        <option value="">Year of Course</option>
+                        <option value="1st Year">1st Year</option>
+                        <option value="2nd Year">2nd Year</option>
+                        <option value="3rd Year">3rd Year</option>
+                        <option value="4th Year">4th Year</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" id="mobile" placeholder="Mobile Number" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            <div class="form-footer">
+                <p>Already have an account? <a href="#" onclick="showLogin()">Sign in here</a></p>
+            </div>
+        </div>
+
+        <!-- Admin Login Form -->
+        <div id="adminLoginForm" class="form-container">
+            <div class="form-loading-overlay">
+                <div class="form-loading-spinner"></div>
+            </div>
+            <div class="form-header">
+                <h1><i class="fas fa-shield-alt"></i> Admin Portal</h1>
+                <p>Administrative Access Only</p>
+            </div>
+            <form id="adminLoginFormElement">
+                <div class="input-group">
+                    <i class="fas fa-user-shield"></i>
+                    <input type="text" id="adminUsername" placeholder="Admin Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="adminPassword" placeholder="Admin Password" required>
+                </div>
+                <button type="submit" class="btn btn-admin">
+                    <i class="fas fa-sign-in-alt"></i> Admin Sign In
+                </button>
+            </form>
+            <div class="form-footer">
+                <p><a href="#" onclick="showLogin()">Back to Student Login</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="api-service.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
